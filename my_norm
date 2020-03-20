@@ -7,8 +7,8 @@ import requests
 import stat
 
 version = "0.1.0"
-actual_version = "https://raw.githubusercontent.com/CyrilGrosjean/my_norm/master/version/ver.txt?token=ANQZL75HEGEFF3RQ5NE4HJS6OSQHW"
-actual_file = "https://raw.githubusercontent.com/CyrilGrosjean/my_norm/master/my_norm?token=ANQZL76OKQUC7WJAPLWJNPC6OSQKC"
+actual_version = "https://raw.githubusercontent.com/CyrilGrosjean/my_norm/master/version/ver.txt"
+actual_file = "https://raw.githubusercontent.com/CyrilGrosjean/my_norm/master/my_norm"
 path_directory = path.abspath(__file__)
 
 def green():
