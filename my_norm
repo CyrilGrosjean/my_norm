@@ -12,7 +12,7 @@ actual_file = "https://raw.githubusercontent.com/CyrilGrosjean/my_norm/master/my
 path_directory = path.abspath(__file__)
 
 def green():
-    return "\033[92m"
+    return "\033[32m"
 
 def red():
     return "\033[31m"
@@ -22,9 +22,6 @@ def orange():
 
 def blue():
     return "\033[34m"
-
-def green():
-    return "\033[42m"
 
 def bold():
     return "\033[1m"
