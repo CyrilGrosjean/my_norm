@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 
 import sys
-from os import chdir, getcwd
+from os import chdir, getcwd, remove, path, chmod
 from os import stat as stats
 import requests
 import stat
 
-version = "1.0.0"
+version = "0.1.0"
+actual_version = "https://raw.githubusercontent.com/CyrilGrosjean/my_norm/master/version/ver.txt?token=ANQZL75HEGEFF3RQ5NE4HJS6OSQHW"
+actual_file = "https://raw.githubusercontent.com/CyrilGrosjean/my_norm/master/my_norm?token=ANQZL76OKQUC7WJAPLWJNPC6OSQKC"
+path_directory = path.abspath(__file__)
 
 def green():
     return "\033[92m"
+
+def red():
+    return "\033[31m"
 
 def orange():
     return "\033[33m"
@@ -28,4 +34,63 @@ def end():
 
 
 def check_for_updates():
-    pass
+    global version
+    global actual_version
+    global actual_file
+    global path_directory
+
+    ver_file = []
+    new_ver = []
+
+    print(green() + "You are currently running version " + version + end())
+    print(orange() + "Checking for updates..." + end())
+    ver_file = version.split(".")
+    file_found = False
+    try:
+        r = requests.get(actual_version)
+        file_found = True
+    except:
+        file_found = False
+
+    if file_found:
+        del file_found
+        with open("n_ver.txt", "wb") as f:
+            f.write(r.content)
+        del r
+        file = open("n_ver.txt", "r")
+        new_ver = file.read().split(".")
+        file.close()
+        remove("n_ver.txt")
+
+        require_update = False
+        for i in range(0, len(ver_file)):
+            if ver_file[i] != new_ver[i]:
+                require_update = True
+
+        if require_update:
+            print(orange() + "Your version is outdated !\nUpdating...\n")
+            file_found = False
+            try:
+                r = requests.get(actual_file)
+                file_found = True
+            except:
+                file_found = False
+
+            if file_found:
+                with open(path_directory, "wb") as f:
+                    f.write(r.content)
+                del r
+                st = stats(path_directory)
+                chmod(file_directory, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+                print(green() + "Program updated ! Please restart it.")
+                exit(0)
+            else:
+                print(red() + "No Internet connection.\n" + end())
+        else:
+            print(green() + "The program is already up to date !\n" + end())
+            del ver_file
+            del new_ver
+    else:
+        print(red() + "No Internet connection.\n" + end())
+
+check_for_updates()
