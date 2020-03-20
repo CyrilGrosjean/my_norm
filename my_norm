@@ -7,8 +7,8 @@ import requests
 import stat
 
 version = "0.1.0"
-actual_version = "https://raw.githubusercontent.com/CyrilGrosjean/my_norm/master/version/ver.txt"
-actual_file = "https://raw.githubusercontent.com/CyrilGrosjean/my_norm/master/my_norm"
+actual_version = "https://raw.githubusercontent.com/CyrilGrosjean/my_norm/master/version/ver.txt?token=ANQZL75HEGEFF3RQ5NE4HJS6OSQHW"
+actual_file = "https://raw.githubusercontent.com/CyrilGrosjean/my_norm/master/my_norm?token=ANQZL76OKQUC7WJAPLWJNPC6OSQKC"
 path_directory = path.abspath(__file__)
 
 def green():
@@ -81,7 +81,7 @@ def check_for_updates():
                     f.write(r.content)
                 del r
                 st = stats(path_directory)
-                chmod(file_directory, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+                chmod(path_directory, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
                 print(green() + "Program updated ! Please restart it.")
                 exit(0)
             else:
