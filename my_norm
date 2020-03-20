@@ -1,3 +1,31 @@
 #!/usr/bin/env python3
 
+import sys
 from os import chdir, getcwd
+from os import stat as stats
+import requests
+import stat
+
+version = "1.0.0"
+
+def green():
+    return "\033[92m"
+
+def orange():
+    return "\033[33m"
+
+def blue():
+    return "\033[34m"
+
+def green():
+    return "\033[42m"
+
+def bold():
+    return "\033[1m"
+
+def end():
+    return "\033[0m"
+
+
+def check_for_updates():
+    pass
