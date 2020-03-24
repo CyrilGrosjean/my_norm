@@ -1,5 +1,7 @@
 # My_Norm
 
+## The program is just a prototype now.
+
 ## What is it ?
 
 This program will be check your norm errors. It is probably imperfect

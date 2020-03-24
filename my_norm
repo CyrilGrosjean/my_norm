@@ -11,6 +11,8 @@ actual_version = "https://raw.githubusercontent.com/CyrilGrosjean/my_norm/master
 actual_file = "https://raw.githubusercontent.com/CyrilGrosjean/my_norm/master/my_norm?token=ANQZL76OKQUC7WJAPLWJNPC6OSQKC"
 path_directory = path.abspath(__file__)
 
+files = []
+
 def green():
     return "\033[32m"
 
