@@ -183,6 +183,38 @@ def check_majors():
 
     # O4 check
 
+    for i in files:
+        print(i)
+        name = i.split("/")[-1]
+
+        if not name.islower() or " " in name:
+            if "O4" not in major_error_list:
+                major_error_list["O4"] = []
+            file_errors.append(i)
+            major_error_list["O4"].append(len(file_errors) - 1)
+
+    del name
+
+    # G1 check
+
+    header = ["/*", "** EPITECH PROJECT, ", "** ", "** File description:", "** ", "*/"]
+
+    for i in files:
+        tmp = open(i, "r", encoding='utf-8')
+        content = tmp.read()
+        content_split = content.split("\n")
+        tmp.close()
+        del content
+        del tmp
+        for i in range(0, len(header)):
+            if header[i] not in content_split[i]:
+                if "G1" not in major_error_list:
+                    major_error_list["G1"] = []
+                file_errors.append(i)
+                major_error_list["G1"].append(len(file_errors) - 1)
+                break
+        del content_split
+
 check_for_updates()
 
 major_errors = {"O1": 0, "O3": 0, "O4": 0, "G1": 0, "F2": 0, "F3": 0, "F4": 0, "F5": 0, "F7": 0,
