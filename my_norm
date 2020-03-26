@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
-from os import chdir, getcwd, remove, path, chmod
+from os import chdir, getcwd, remove, path, chmod, listdir
 from os import stat as stats
 import requests
 import stat
@@ -31,6 +31,7 @@ def bold():
 def end():
     return "\033[0m"
 
+# ---------------- UPDATE THE FILE ---------------- #
 
 def check_for_updates():
     global version
@@ -92,4 +93,107 @@ def check_for_updates():
     else:
         print(red() + "No Internet connection.\n" + end())
 
+# ---------------- FIND .C AND .H FILES ---------------- #
+
+def check_files():
+    global files
+
+    repos = ['./']
+    file_list = []
+
+    while len(repos) != 0:
+        file_list = listdir(repos[0])
+        for i in file_list:
+            if ".c" in i or ".h" in i:
+                files.append(repos[0] + i)
+            else:
+                try:
+                    temp = listdir(repos[0] + i + "/")
+                    repos.append(repos[0] + i + "/")
+                except:
+                    pass
+        del repos[0]
+        file_list = []
+    if len(files) == 0:
+        print(red() + "Error: Cannot find '.c' file !")
+        exit(84)
+    print(green() + "Found " + orange() + bold() + str(len(files)) + end() + green() + " '.c' file(s) !")
+
+# ---------------- CHECK MAJOR ---------------- #
+
+def check_majors():
+    global files
+
+    major_error_list = {} # NAME: index
+    file_errors = [] # file_name[:line]
+
+    # O1 check
+
+    repos = ['./']
+    file_list = []
+    list_end = [".c", ".h", "Makefile", ".a", ".gitignore", ".git", ".vscode"]
+
+    while len(repos) != 0:
+        file_list = listdir(repos[0])
+        for i in file_list:
+            is_it = True
+            for h in list_end:
+                if h in i:
+                    is_it = False
+            if is_it:
+                try:
+                    temp = listdir(repos[0] + i + "/")
+                    repos.append(repos[0] + i + "/")
+                except:
+                    if "O1" not in major_error_list:
+                        major_error_list["O1"] = []
+                    file_errors.append(repos[0] + i)
+                    major_error_list["O1"].append(len(file_errors) - 1)
+        del repos[0]
+        file_list = []
+
+    del file_list
+    del repos
+
+    # O3 check
+
+    for i in files:
+        count = 0
+        f = open(i, "r", encoding='utf-8')
+        content = f.read()
+        split_content = content.split("\n")
+
+        f.close()
+        del content
+        del f
+
+        for c in range(0, len(split_content)):
+            if "{" in split_content[c]:
+                if "(" in split_content[c - 1] and ")" in split_content[c - 1]:
+                    if len(split_content[c - 1].split("(")[0].split(" ")) == 2:
+                        count += 1
+        if count > 5:
+            if "O3" not in major_error_list:
+                major_error_list["O3"] = []
+            file_errors.append(i)
+            major_error_list["O3"].append(len(file_errors) - 1)
+
+    del count
+    del split_content
+
+    # O4 check
+
 check_for_updates()
+
+major_errors = {"O1": 0, "O3": 0, "O4": 0, "G1": 0, "F2": 0, "F3": 0, "F4": 0, "F5": 0, "F7": 0,
+"L1": 0, "V1": 0, "H1": 0}
+minor_errors = {"O2": 0, "G2": 0, "G3": 0, "G4": 0, "G5": 0, "F6": 0, "L2": 0, "L3": 0, "L4": 0,
+"L5": 0, "L6": 0, "V3": 0, "C1": 0, "C3": 0, "H3": 0}
+info_errors = {"C2": 0, "L_003": 0}
+
+files = []
+
+print(orange() + "Checking files..." + end())
+check_files()
+print(orange() + "Checking for " + red() + "major " + orange() + "errors...")
+check_majors()
